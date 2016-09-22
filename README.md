@@ -8,6 +8,7 @@ This repository contains the various [Postach.io](http://postach.io) themes that
 
  All the websites have Google Analytics set up internally by:
 
+```html
     {% if site.analytics %}
     <script type="text/javascript">
         var _gaq = _gaq || [];
@@ -20,6 +21,7 @@ This repository contains the various [Postach.io](http://postach.io) themes that
           })();
     </script>
     {% endif %}
+```
 
 where `{% site.analytics %}` is defined in each site's settings page. Similarily, Disquss comments can be loaded if enabled via the `{% site.disqus %}` setting and then the following:
 
