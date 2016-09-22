@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<!-- version 1.0 -->
+<html prefix="og: http://ogp.me/ns#" xmlns:og="http://ogp.me/ns#">
+  <head>
+    <meta charset="utf-8">
+    <title>
+      {% if is_home %}{{ site.author }} {% elif is_tag %}{{ tag }} {% elif post %}{{ post.title }} {% endif %} | {{ site.name }}
+    </title>
+        <meta name="description" content="Moodboard for Ahmad Assaf | Interesting designs I find around the web"/>
+        <meta name="keywords" content="Moodboard, Design, UI/UX, UI"/>
+        <meta name="Author" content="Ahmad Assaf, me@ahmadassaf.com">
+
+        <meta property='og:locale' content='en_US'/>
+        <meta property='og:title' content="Ahmad Assaf Moodboard"/>
+        <meta property='og:description' content='Moodboard for Ahmad Assaf | Interesting designs I find around the web'/>
+        <meta property='og:site_name' content="Moodboard for Ahmad Assaf"/>
+        <meta property='og:type' content='website'/>
+
+        <meta name="twitter:creator" content="@ahmadaassaf">
+
+        {{ header_meta }}
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="{{ static('fonts/symbolset/ss-social.css') }}">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{{ assets('css/style.css') }}" rel="stylesheet" />
+  </head>
+
+  <body>
+
+    <div class="wrap">
+      <header class="header">
+        <div class="avatar">
+          <a href="/"><img src="http://ahmadassaf.com/images/logo.svg" class="img-circle" alt="{{ site.author }}" /></a>
+        </div>
+
+        <div class="nav-logo">
+          <div class="logo">
+            <h1><a href="/" rel="home">{{ site.name }}</a></h1>
+            {% if is_home and site.bio %}
+                <p class="blog-description">{{ site.bio }}</p>
+            {% endif %}
+          </div>
+        </div>
+      </header>
+
+      {% if is_home or is_tag %}
+          <div class="post-area">
+
+            {% if is_tag %}
+                <h2 class="tag-head">Showing all posts tagged {{ tag }}:</h2>
+            {% endif %}
+
+            {% if posts %}
+                <section class="posts">
+                {% for post in posts %}
+                  <article class="blog-post">
+                    {% if post.photos %}
+                        {% for photo in post.photos %}
+                            {% if loop.index == 1 %}
+                                <div class="post-image">
+                                  <a href="{{ post.url }}">
+                                    {% if photo %}
+                                        <img src="{{ photo.width_600 }}" alt="Picture {{ loop.index }}" />
+                                    {% else %}
+                                        <img src="http://placehold.it/400x300/0eafff/ffffff.png" alt="" />
+                                    {% endif %}
+                                  </a>
+                                  {% if post.tags %}
+                                      <div class="post-tags">
+                                        <p>{{- post.tags|format_tags(humanize=True) -}}</p>
+                                      </div>
+                                  {% endif %}
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                        <div>
+                          <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+                          <p class="post-date"><time datetime="{{ post.created_at }}">{{ post.created_at|date_format }}</time></p>
+                          {% if post.tags and not post.photos %}
+                            <p class="post-tags">{{- post.tags|format_tags(humanize=True) -}}</p>
+                          {% endif %}
+                          {% if post.content|striptags|wordcount > 0 %}
+                              <p>{{ post.content|striptags|truncate(200) }}</p>
+                              <p class="post-link"><a href="{{ post.url }}">View more &rarr;</a></p>
+                           {% endif %}
+                    </div>
+                  </article>
+                {% endfor %}
+                </section>
+
+                <div class="pagination">
+                  {% if pagination.prev %}<a href="{{ pagination.prev }}" class="post-prev">&larr; View Previous Posts</a>{% endif %}
+                  {% if pagination.next %}<a href="{{ pagination.next }}" class="post-next">View More Posts &rarr;</a>{% endif %}
+                </div>
+
+            {% else %}
+                <h2 class="title"><em>No posts yet :(</em></h2>
+        {% endif %}
+
+      {% elif post.type == 'link' %}
+
+      <article class="post">
+        <section class="content">
+          <div class="post-content" data-type-cleanup="true">
+            <header>
+              <h1>{{ link.title }}</h1>
+            </header>
+            <p class="post-date">Published by {{ site.author }}, <time datetime="{{ link.created_at }}">{{ link.created_at|date_format }}</time></p>
+            {{ link.content }}
+            <p class="link-url"><i class="fa fa-link" aria-hidden="true"></i> Origin:<a href="{{ link.link_url }}">{{ link.title }}</a></p>
+          </div>
+        </section>
+      </article>
+
+      {% endif %}
+
+    </div>
+
+    {{ footer_meta }}
+
+    <!-- javasript -->
+    <script type="text/javascript" src="{{ static('fonts/symbolset/ss-social-circle.js') }}" /></script>
+    <script src="{{ assets('js/gridly.min.js') }}" /></script>
+    {% if site.analytics %}
+        <script>
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', '{{ site.analytics }}']);
+            _gaq.push(['_trackPageview']);
+            (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+    {% endif %}
+
+        <style>
+        * {
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        body {
+            background: none;
+        }
+
+        .content, .page, .post {
+            display: table;
+            margin: 0 auto;
+        }
+
+        .wrap .header .avatar, .wrap .header .nav-logo{
+            display: table !important;
+            margin: 0 auto !important;
+            float: none !important;
+        }
+
+        .header {
+            margin: 3em 0 5em 0;
+        }
+
+            .header .logo {
+                text-align: center;
+                text-transform: uppercase;
+                letter-spacing: 10px;
+            }
+        .avatar img {
+            border-radius: 0;
+        }
+
+        .tag-head {
+            text-align: center;
+            margin: 40px 0;
+            font-size: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        #nav {
+            text-align: center;
+        }
+
+            #nav ul li a {
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                margin: 0 10px;
+            }
+
+        h1 *, .post-content h1 {
+            font-family: 'Tauri', sans-serif;
+            text-align: center;
+        }
+
+        .post-content a {
+            margin: 0 5px;
+            text-decoration: none !important;
+            color: #4CAF50;
+        }
+
+        p.blog-description {
+            letter-spacing: 3px;
+            color: #9E9E9E;
+        }
+
+    </style>
+</body>
+</html>

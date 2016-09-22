@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<!-- version 1.0 -->
+<html prefix="og: http://ogp.me/ns#" xmlns:og="http://ogp.me/ns#">
+  <head>
+    <meta charset="utf-8">
+
+    <title>
+      {% if is_home %}{{ site.author }} {% elif is_tag %}{{ tag }} {% elif post %}{{ post.title }} {% endif %} | {{ site.name }}
+    </title>
+
+    <meta name="description" content="Curated Food Recipes by Ahmad Assaf | Interesting dishes and recipes i find around the web"/>
+    <meta name="keywords" content="Food, Recipes, Helath, Nutrition"/>
+    <meta name="Author" content="Ahmad Assaf, me@ahmadassaf.com">
+
+    <meta property='og:locale' content='en_US'/>
+    <meta property='og:title' content="Ahmad Assaf Curated Food Recipes"/>
+    <meta property='og:description' content='Curated Food Recipes by Ahmad Assaf | Interesting dishes and recipes i find around the web"'/>
+    <meta property='og:site_name' content="Curated Food Recipes by Ahmad Assaf"/>
+    <meta property='og:type' content='website'/>
+
+    <meta name="twitter:creator" content="@ahmadaassaf">
+
+    {{ header_meta }}
+
+    <link rel="stylesheet" type="text/css" href="{{ static('fonts/symbolset/ss-social.css') }}">
+    <link href="{{ assets('css/style.css') }}" rel="stylesheet" />
+    <link href="//fonts.googleapis.com/css?family=Open Sans&subset=latin" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Tauri&subset=latin" rel="stylesheet" type="text/css">
+
+  </head>
+
+  <body>
+
+    <div class="wrap">
+
+      <header class="header">
+        <div class="avatar">
+          <a href="/"><img src="http://ahmadassaf.com/images/logo.svg" class="img-circle" alt="{{ site.author }}" /></a>
+        </div>
+        <div class="nav-logo">
+          <div class="logo">
+            <h1><a href="/" rel="home">{{ site.name }}</a></h1>
+          </div>
+
+          <!-- Navigation -->
+          <nav id="nav">
+            <ul>
+              {% for tag in site.tags %}
+                <li><a href="/tag/{{ tag.name }}">{{ tag.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </nav>
+        </div>
+        <!-- Navigation -->
+
+        {% if is_tag %}
+            <h2 class="tag-head">{{ tag }}</h2>
+        {% endif %}
+
+      </header>
+
+      {% if is_home or is_tag %}
+
+      <div class="post-area">
+
+        {% if posts %}
+        <section itemscope itemtype="http://schema.org/Blog" class="posts">
+
+            {% for post in posts %}
+              <article itemscope itemtype="https://schema.org/Recipe" class="blog-post">
+                {% if post.photos %}
+                    {% for photo in post.photos %}
+                        {% if loop.index == 1 %}
+                            <div class="post-image">
+                              <a href="{{ post.url }}">
+                                <img itemprop="image" src="{{ photo.width_600 }}" alt="Picture {{ loop.index }}" />
+                              </a>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+                <div class="post-content">
+                  <h2><a itemprop="name" class="emph-title" href="{{ post.url }}">{{ post.title }}</a></h2>
+                  <p itemprop="datePublished" class="post-date"><time datetime="{{ post.created_at }}">{{ post.created_at|date_format }}</time></p>
+                  {% if post.tags and not post.photos %}
+                    <p itemprop="keywords" class="post-tags">{{post.tags|format_tags(humanize=true, link=true, delimiter=' ')}}</p>
+                  {% endif %}
+                  {% if post.content|striptags|wordcount > 0 %}
+                    <p>{{ post.content|striptags|truncate(200) }}</p>
+                    <p itemprop="url" class="post-link"><a href="{{ post.url }}">View more &rarr;</a></p>
+                  {% endif %}
+                </div>
+              </article>
+
+            {% endfor %}
+        </section>
+
+        <div class="pagination">
+          {% if pagination.prev %}<a href="{{ pagination.prev }}" class="post-prev">&larr; View Previous Posts</a>{% endif %}
+          {% if pagination.next %}<a href="{{ pagination.next }}" class="post-next">View More Posts &rarr;</a>{% endif %}
+        </div>
+
+        {% else %}
+        <h2 class="title"><em>No posts yet :(</em></h2>
+        {% endif %}
+
+      {% elif post.type == 'post' %}
+
+      <article itemscope itemtype="http://schema.org/BlogPosting" class="post">
+        {{ theme.social.bar }}
+        <section class="content">
+          <div class="post-content" data-type-cleanup="true">
+            <header>
+              <h1>{{ post.title }}</h1>
+            </header>
+            <div class="post-tags">
+            {% if post.tags %}
+              <p itemprop="keywords"><strong>Tags:</strong> {{ post.tags|format_tags(humanize=true, link=true, delimiter=' ') }}</p>
+            {% endif %}
+            </div>
+            {{ post.content}}
+          </div>
+          <div class="post-footer">
+          </div>
+        </section>
+      </article>
+    </div>
+
+    {% endif %}
+
+    {{ footer_meta }}
+
+    <script src="{{ assets('js/gridly.min.js') }}" /></script>
+
+    {% if site.analytics %}
+        <script>
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', '{{ site.analytics }}']);
+        _gaq.push(['_trackPageview']);
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+    {% endif %}
+
+    <style>
+        * {
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        body {
+            background: none;
+        }
+
+        .content, .page, .post {
+            display: table;
+            margin: 0 auto;
+        }
+
+        .wrap .header .avatar, .wrap .header .nav-logo{
+            display: table !important;
+            margin: 0 auto !important;
+            float: none !important;
+        }
+
+        .header {
+            margin: 3em 0 5em 0;
+        }
+
+            .header .logo {
+                text-align: center;
+                text-transform: uppercase;
+                letter-spacing: 10px;
+            }
+        .avatar img {
+            border-radius: 0;
+        }
+
+        .tag-head {
+            text-align: center;
+            margin: 40px 0;
+            font-size: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        #nav {
+            text-align: center;
+        }
+
+            #nav ul li a {
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                margin: 0 10px;
+            }
+
+        h1 *, .post-content h1 {
+            font-family: 'Tauri', sans-serif;
+            text-align: center;
+        }
+
+    </style>
+</body>
+</html>
