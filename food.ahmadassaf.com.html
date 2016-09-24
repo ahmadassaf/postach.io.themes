@@ -22,15 +22,19 @@
 
     {{ header_meta }}
 
+    <link rel="shortcut icon" type="image/png" href="http://ahmadassaf.com/images/favicon.png" />
+    <link rel="shortcut icon" href="http://ahmadassaf.com/images/favicon.ico" />
+
     <link rel="stylesheet" type="text/css" href="{{ static('fonts/symbolset/ss-social.css') }}">
     <link href="{{ assets('css/style.css') }}" rel="stylesheet" />
     <link href="//fonts.googleapis.com/css?family=Open Sans&subset=latin" rel="stylesheet" type="text/css">
     <link href="//fonts.googleapis.com/css?family=Tauri&subset=latin" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/css-spinning-spinners/1.1.0/load8.css" />
 
   </head>
 
   <body>
-
+    <div class="loading"></div>
     <div class="wrap">
 
       <header class="header">
@@ -132,7 +136,12 @@
     {{ footer_meta }}
 
     <script src="{{ assets('js/gridly.min.js') }}" /></script>
-
+    <script>
+        $(window).on('load', function() {
+          $('.loading').delay(350).hide(); // will fade out the white DIV that covers the website.
+          $('.wrap').delay(350).css({'display':'block'});
+        });
+    </script>
     {% if site.analytics %}
         <script>
         var _gaq = _gaq || [];
@@ -153,6 +162,10 @@
 
         body {
             background: none;
+        }
+
+        .wrap {
+            display:none;
         }
 
         .content, .page, .post {

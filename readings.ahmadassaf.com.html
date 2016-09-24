@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-
   <title>
-    {% if is_home %}{{ site.author }} {% elif is_tag %}Posts tagged "{{ tag|format_tag(False, True) }}" {% elif post %}{{ post.title }} {% endif %} | {{ site.name }}
+    {% if is_login %}Login
+    {% elif is_home %}{{ site.author }}
+    {% elif is_tag %}Posts tagged "{{ tag|format_tag(False, True) }}"
+    {% elif post %}{{ post.title }}
+    {% endif %}
+    | {{ site.name }}
   </title>
 
   {{ header_meta }}
 
+  <link rel="shortcut icon" type="image/png" href="http://ahmadassaf.com/images/favicon.png" />
+  <link rel="shortcut icon" href="http://ahmadassaf.com/images/favicon.ico" />
+
   <link rel="stylesheet" type="text/css" href="{{ assets('css/normalize.css') }}" />
   <link rel="stylesheet" type="text/css" href="{{ assets('css/nprogress.css') }}" />
   <link rel="stylesheet" type="text/css" href="{{ assets('css/style.css') }}" />
-
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic" />
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
 
@@ -242,16 +248,16 @@
   <script type="text/javascript" src="{{ assets('js/jquery.fitvids.js') }}"></script>
 
   {% if site.analytics %}
-      <script type="text/javascript">
-          var _gaq = _gaq || [];
-          _gaq.push(['_setAccount', '{{ site.analytics }}']);
-          _gaq.push(['_trackPageview']);
-          (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = 'https://ssl.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-          })();
-      </script>
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', '{{ site.analytics }}']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://ssl.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+  </script>
   {% endif %}
 </body>
 </html>

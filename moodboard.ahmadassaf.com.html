@@ -6,28 +6,32 @@
     <title>
       {% if is_home %}{{ site.author }} {% elif is_tag %}{{ tag }} {% elif post %}{{ post.title }} {% endif %} | {{ site.name }}
     </title>
-        <meta name="description" content="Moodboard for Ahmad Assaf | Interesting designs I find around the web"/>
-        <meta name="keywords" content="Moodboard, Design, UI/UX, UI"/>
-        <meta name="Author" content="Ahmad Assaf, me@ahmadassaf.com">
+    <meta name="description" content="Moodboard for Ahmad Assaf | Interesting designs I find around the web"/>
+    <meta name="keywords" content="Moodboard, Design, UI/UX, UI"/>
+    <meta name="Author" content="Ahmad Assaf, me@ahmadassaf.com">
 
-        <meta property='og:locale' content='en_US'/>
-        <meta property='og:title' content="Ahmad Assaf Moodboard"/>
-        <meta property='og:description' content='Moodboard for Ahmad Assaf | Interesting designs I find around the web'/>
-        <meta property='og:site_name' content="Moodboard for Ahmad Assaf"/>
-        <meta property='og:type' content='website'/>
+    <meta property='og:locale' content='en_US'/>
+    <meta property='og:title' content="Ahmad Assaf Moodboard"/>
+    <meta property='og:description' content='Moodboard for Ahmad Assaf | Interesting designs I find around the web'/>
+    <meta property='og:site_name' content="Moodboard for Ahmad Assaf"/>
+    <meta property='og:type' content='website'/>
 
-        <meta name="twitter:creator" content="@ahmadaassaf">
+    <meta name="twitter:creator" content="@ahmadaassaf">
 
-        {{ header_meta }}
+    {{ header_meta }}
+
+    <link rel="shortcut icon" type="image/png" href="http://ahmadassaf.com/images/favicon.png" />
+    <link rel="shortcut icon" href="http://ahmadassaf.com/images/favicon.ico" />
 
     <!-- css -->
     <link rel="stylesheet" type="text/css" href="{{ static('fonts/symbolset/ss-social.css') }}">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/css-spinning-spinners/1.1.0/load8.css" />
     <link href="{{ assets('css/style.css') }}" rel="stylesheet" />
   </head>
 
   <body>
-
+    <div class="loading"></div>
     <div class="wrap">
       <header class="header">
         <div class="avatar">
@@ -121,8 +125,14 @@
     {{ footer_meta }}
 
     <!-- javasript -->
-    <script type="text/javascript" src="{{ static('fonts/symbolset/ss-social-circle.js') }}" /></script>
     <script src="{{ assets('js/gridly.min.js') }}" /></script>
+    <script>
+        $(window).on('load', function() {
+          $('.loading').delay(350).hide(); // will fade out the white DIV that covers the website.
+          $('.wrap').delay(350).css({'display':'block'});
+        });
+    </script>
+
     {% if site.analytics %}
         <script>
             var _gaq = _gaq || [];
@@ -149,7 +159,9 @@
             display: table;
             margin: 0 auto;
         }
-
+        .wrap {
+            display:none;
+        }
         .wrap .header .avatar, .wrap .header .nav-logo{
             display: table !important;
             margin: 0 auto !important;
